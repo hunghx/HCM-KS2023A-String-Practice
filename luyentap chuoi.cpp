@@ -3,7 +3,8 @@
 #include <string.h>
 #define MAX 100
 char students[MAX][6][20];
-int n;
+int n; // 1,2,3,4,5,(index = 5)
+
 
 int pressAnyKey(){
 	char c;
@@ -11,6 +12,7 @@ int pressAnyKey(){
 	printf("\tAn phim bat ky de quay lai menu! \n");
 	scanf("%c",&c);	
 }
+
 void showListStudents(){
 	if(n == 0){
 		printf("\t-----------Danh sach trong---------\n");
@@ -33,20 +35,27 @@ void copyStudent(char stu1[6][20], char stu2[6][20]){
 	strcpy(stu1[4], stu2[4]);
 	strcpy(stu1[5], stu2[5]);
 }
-//void swapStr(char str1[], char str2[]){
-//	char temp[20];
-//	strcpy(temp, str1);
-//	strcpy(str1, str2);
-//	strcpy(str2, temp);
-//}
-//void swap(char stu1[6][20], char stu2[6][20]){
-//	swapStr(stu1[0], stu2[0]);
-//	swapStr(stu1[1], stu2[1]);
-//	swapStr(stu1[2], stu2[2]);
-//	swapStr(stu1[3], stu2[3]);
-//	swapStr(stu1[4], stu2[4]);
-//	swapStr(stu1[5], stu2[5]);
-//}
+void swapStr(char str1[], char str2[]){
+	char temp[20];
+	strcpy(temp, str1);
+	strcpy(str1, str2);
+	strcpy(str2, temp);
+}
+void swap(char stu1[6][20], char stu2[6][20]){
+	for(int i =0 ; i <6 ; i++){
+		swapStr(stu1[i], stu2[i]);
+	}
+
+}
+void sortByName(){
+	for(int i = 0; i< n -1; i++){
+		for(int j =0; j < n-i-1 ; i++){
+			if(strcmp(students[i][1],students[i+1][1]) > 0){
+				swap(students[i],students[i+1]);
+			}
+		}	
+	}
+}
 void addNewStudent(){
 	if(n == MAX){
 		printf("\tMang day\n");
@@ -66,16 +75,15 @@ void addNewStudent(){
 	printf("\tNhap trang thai sv (Dang hoc/Bo hoc): ");
 	gets(students[n][5]); 
 	n++;		
-	
 }
-void deleteStudent(){ // st1,st2,st3(i = 2),st4,st5,st6
+void deleteStudent(){ // st1,st2,st4,st5,st6 : st3 = st4;
 	fflush(stdin);
 	printf("\t Nhap id sinh vien can xoa : ");
 	char id[20];
 	gets(id);
 	int isMove = 0;
 	for(int i = 0; i< n - 1 ; i++){
-		if(strcmp(students[i][0],id)){
+		if(strcmp(students[i][0],id)==0){
 			isMove = 1;	
 		}
 		if(isMove){
@@ -85,15 +93,16 @@ void deleteStudent(){ // st1,st2,st3(i = 2),st4,st5,st6
 	n--;	
 }
 int main(){
+	// gets(doc den ki tu \n hoac EOF, bien \n thành \0) và fgets(them ki tu \0 sau \n) khác nhau nhu nào 
 	int choice;
-	system("color 2");
+	system("color 74");
 	while(1){
 		printf("\t===============MENU=============\n");
 		printf("\t1.Hien thi danh sach sinh vien\n");
 		printf("\t2.Them moi sinh vien\n");
 		printf("\t3.Chinh sua thong tin sinh vien\n");
 		printf("\t4.Xoa sinh vien\n");
-		printf("\t5.Thoat\n");
+		printf("\t7.Thoat\n");
 		printf("\t>>>> Moi ban chon chuc nang : ");
 		scanf("%d",&choice);
 		switch(choice){
@@ -103,17 +112,19 @@ int main(){
 			case 2: 
 				addNewStudent();
 				break;
-				case 4:
-					deleteStudent();
-					break;
-			case 5 :
+			case 4:
+				deleteStudent();
+				break;
+			case 6:
+				sortByName();
+				break;
+			case 7 :
 				exit(0);
 				break;
 			default	:
 				break;	
-		
 		}
-		
+
 		pressAnyKey();
 		system("cls");
 	}	
